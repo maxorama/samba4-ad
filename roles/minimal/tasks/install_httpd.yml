@@ -1,0 +1,27 @@
+---
+
+- name: Installing Apache
+  dnf: 
+   name: ['httpd','mod_ssl','mod_fcgid']
+   state: present
+  ignore_errors: False
+
+- name: Regexp HTTP config...
+  replace:
+   path: /etc/httpd/conf/httpd.conf
+   regexp: '(AllowOverride)(\s.*)?'
+   replace: '\1 All'
+
+- name: Enable service Apache2
+  service: name=httpd state=started enabled=yes
+  notify: restart apache
+
+- name: Opening HTTP firewall port
+  firewalld:
+   service: http
+   zone: public
+   permanent: true
+   state: enabled
+   immediate: yes
+  ignore_errors: true
+
