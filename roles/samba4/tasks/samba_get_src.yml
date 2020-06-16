@@ -1,0 +1,13 @@
+---
+
+- name: Getting Samba4 source file
+  get_url: url=https://download.samba.org/pub/samba/stable/samba-{{ samba_ver }}.tar.gz dest=/tmp/samba-{{ samba_ver }}.tar.gz mode=0777
+  register: result
+  ignore_errors: false
+
+- name: Extracting Samba4 files
+  unarchive:
+    src: /tmp/samba-{{ samba_ver }}.tar.gz
+    dest: /tmp/
+    remote_src: yes
+

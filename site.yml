@@ -23,13 +23,13 @@
    - include_role: name=minimal
    - include_role: name=reboot
 
-- name: Installing and configuring PXE Server
+- name: Installing and configuring Samba4 AD DC Server
   hosts: all
   remote_user: root
-  tags: pxe_setup
+  tags: samba_setup
   gather_facts: yes
 
   roles:
-   - pxe-server
+   - samba4
    - reboot
 

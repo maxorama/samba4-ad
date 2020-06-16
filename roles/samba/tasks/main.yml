@@ -1,7 +1,0 @@
----
-
-- include: samba_prepare_req.yml
-- include: samba_get_src.yml
-- include: samba_compile_src.yml
-- include: samba_copy_configs.yml
-
