@@ -31,5 +31,5 @@
 
   roles:
    - samba4
-   - reboot
+#   - reboot
 

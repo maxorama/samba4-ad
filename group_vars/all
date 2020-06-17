@@ -7,4 +7,4 @@ ntpserver: 192.168.10.1
 allow_network: 192.168.10.0/24
 host_ip: 192.168.10.101
 hostname: dc
-samba_ver: 4.12.3
+

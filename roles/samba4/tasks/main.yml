@@ -1,7 +1,63 @@
 ---
 
-#- include: samba_prepare_req.yml
-- include: samba_get_src.yml
-#- include: samba_compile_src.yml
-#- include: samba_copy_configs.yml
+- name: Installing Samba4 requirements
+  dnf:
+   name: ['python3','python3-devel','libxslt','zlib-devel','docbook-style-xsl','intltool','lmdb','lmdb-devel','libticonv','libticonv-devel','libcmocka','libcmocka-devel','popt','popt-devel','openldap','openldap-devel']
+   state: present
+  register: result
+  ignore_errors: False
+
+#- include: samba_compile_talloc.yml
+#  name: Compiling Talloc from sources
+
+#  vars:
+#    talloc_version: "2.3.1"
+#    talloc_tarball_url: "https://www.samba.org/ftp/talloc/talloc-{{ talloc_version }}.tar.gz"
+#    talloc_install_dir: "/tmp/talloc-{{ talloc_version }}"
+#    talloc_prefix_path: "/usr/local"
+
+#- include: samba_compile_tevent.yml
+#  name: Compiling Tevent from sources
+
+#  vars:
+#    tevent_version: "0.10.2"
+#    tevent_tarball_url: "https://www.samba.org/ftp/tevent/tevent-{{ tevent_version }}.tar.gz"
+#    tevent_install_dir: "/tmp/tevent-{{ tevent_version }}"
+#    tevent_prefix_path: "/usr/local"
+
+#  environment:
+#    CPPFLAGS: "-I/usr/local/include"
+#    LDFLAGS: "-L/usr/local/lib"
+#    PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH"
+
+#- include: samba_compile_tdb.yml
+#  name: Compiling Tdb from sources
+
+#  vars:
+#    tdb_version: "1.4.3"
+#    tdb_tarball_url: "https://www.samba.org/ftp/tdb/tdb-{{ tdb_version }}.tar.gz"
+#    tdb_install_dir: "/tmp/tdb-{{ tdb_version }}"
+#    tdb_prefix_path: "/usr/local"
+
+#  environment:
+#    CPPFLAGS: "-I/usr/local/include"
+#    LDFLAGS: "-L/usr/local/lib"
+#    PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH"
+
+#- include: samba_compile_ldb.yml
+#  name: Compiling Ldb from sources
+
+#  vars:
+#    samba_version: "4.12.3"
+#    ldb_version: "2.1.3"
+#    ldb_tarball_url: "https://www.samba.org/ftp/ldb/ldb-{{ ldb_version }}.tar.gz"
+#    ldb_install_dir: "/tmp/ldb-{{ ldb_version }}"
+#    ldb_prefix_path: "/usr/local/samba_{{ samba_version }}"
+
+#  environment:
+#    CPPFLAGS: "-I/usr/local/include"
+#    LDFLAGS: "-L/usr/local/lib"
+#    PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:{{ ldb_prefix_path }}/lib/pkgconfig:$PKG_CONFIG_PATH"
+#    C_INCLUDE_PATH: "{{ ldb_prefix_path }}/include:$C_INCLUDE_PATH"
+#    CPLUS_INCLUDE_PATH: "{{ ldb_prefix_path }}/include:$CPLUS_INCLUDE_PATH"
 
