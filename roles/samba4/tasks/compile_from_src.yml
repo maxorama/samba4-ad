@@ -1,0 +1,35 @@
+---
+
+- name: Getting {{ item.src_name }} source file
+  get_url: url={{ item.src_tarball_url }} dest={{ item.src_install_file }} mode=0777 timeout=15
+  register: src_source
+  ignore_errors: false
+
+- name: Extracting {{ item.src_name }} files
+  unarchive:
+    src: "{{ item.src_install_file }}"
+    dest: /tmp/
+    remote_src: yes
+  when: src_source.changed
+  register: src_source_unpack
+
+- name: Configuring {{ item.src_name }} source
+  command: "./configure --prefix={{ item.src_prefix_path }}"
+  args:
+    chdir: "{{ item.src_install_dir }}"
+  when: src_source_unpack.changed
+  register: src_configure
+
+- name: Build the {{ item.src_name }} default target
+  make:
+    chdir: "{{ item.src_install_dir }}"
+    params:
+      NUM_THREADS: 2
+  when: src_configure.changed
+
+- name: Installing {{ item.src_name }} as root
+  make:
+    chdir: "{{ item.src_install_dir }}"
+    target: install
+  become: yes
+

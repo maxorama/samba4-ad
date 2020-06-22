@@ -7,146 +7,37 @@
   register: result
   ignore_errors: False
 
-- include: samba_compile_deps_src.yml
-  name: Compiling Talloc from sources
+- set_fact:
+    nested_list: "{{ lookup('file', './src_file.json') }}"
+
+- name: Compiling necessary libraries from source
+  args:
+    apply:
+      vars:
+        samba_version: "4.12.3"
+
+      environment:
+        CPPFLAGS: "-I/usr/local/include"
+        LDFLAGS: "-L/usr/local/lib"
+        PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/local/samba-{{ samba_version }}/lib/pkgconfig:$PKG_CONFIG_PATH"
+        C_INCLUDE_PATH: "/usr/include/readline:/usr/include/tirpc:/usr/local/samba-{{ samba_version }}/include:$C_INCLUDE_PATH"
+        CPLUS_INCLUDE_PATH: "/usr/include/readline:/usr/include/tirpc:/usr/local/samba-{{ samba_version }}/include:$CPLUS_INCLUDE_PATH"
+
+  include_tasks: compile_from_src.yml
+  with_items:
+    - "{{ nested_list }}"
 
   vars:
-    src_name: "Talloc"
-    src_version: "2.3.1"
-    src_tarball_url: "https://www.samba.org/ftp/talloc/talloc-{{ src_version }}.tar.gz"
-    src_install_file: "/tmp/talloc-{{ src_version }}.tar.gz"
-    src_install_dir: "/tmp/talloc-{{ src_version }}"
-    src_prefix_path: "/usr/local"
+    src_name: "Samba4"
+    src_version: "4.12.3"
+    src_tarball_url: "https://download.samba.org/pub/samba/stable/samba-{{ src_version }}.tar.gz"
+    src_install_file: "/tmp/samba-{{ src_version }}.tar.gz"
+    src_install_dir: "/tmp/samba-{{ src_version }}"
+    src_prefix_path: "/usr/local/samba_{{ src_version }}"
 
-- include: samba_compile_deps_src.yml
-  name: Compiling Tevent from sources
-
-  vars:
-    src_name: "Tevent"
-    src_version: "0.10.2"
-    src_tarball_url: "https://www.samba.org/ftp/tevent/tevent-{{ src_version }}.tar.gz"
-    src_install_file: "/tmp/tevent-{{ src_version }}.tar.gz"
-    src_install_dir: "/tmp/tevent-{{ src_version }}"
-    src_prefix_path: "/usr/local"
-
-  environment:
-    CPPFLAGS: "-I/usr/local/include"
-    LDFLAGS: "-L/usr/local/lib"
-    PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH"
-
-- include: samba_compile_deps_src.yml
-  name: Compiling GMP from sources
-
-  vars:
-    src_name: "GMP"
-    src_version: "6.2.0"
-    src_tarball_url: "https://gmplib.org/download/gmp/gmp-{{ src_version }}.tar.xz"
-    src_install_file: "/tmp/gmp-{{ src_version }}.tar.xz"
-    src_install_dir: "/tmp/gmp-{{ src_version }}"
-    src_prefix_path: "/usr/local"
-
-  environment:
-    CPPFLAGS: "-I/usr/local/include"
-    LDFLAGS: "-L/usr/local/lib"
-    PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH"
-
-- include: samba_compile_deps_src.yml
-  name: Compiling Nettle from sources
-
-  vars:
-    src_name: "Nettle"
-    src_version: "3.6"
-    src_tarball_url: "https://ftp.gnu.org/gnu/nettle/nettle-{{ src_version }}.tar.gz"
-    src_install_file: "/tmp/nettle-{{ src_version }}.tar.xz"
-    src_install_dir: "/tmp/nettle-{{ src_version }}"
-    src_prefix_path: "/usr/local"
-
-  environment:
-    CPPFLAGS: "-I/usr/local/include"
-    LDFLAGS: "-L/usr/local/lib"
-    PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH"
-
-- include: samba_compile_deps_src.yml
-  name: Compiling P11-Kit from sources
-
-  vars:
-    src_name: "P11-Kit"
-    src_version: "0.23.20"
-    src_tarball_url: "https://github.com/p11-glue/p11-kit/releases/download/0.23.20/p11-kit-{{ src_version }}.tar.xz"
-    src_install_file: "/tmp/p11-kit-{{ src_version }}.tar.xz"
-    src_install_dir: "/tmp/p11-kit-{{ src_version }}"
-    src_prefix_path: "/usr/local"
-
-  environment:
-    CPPFLAGS: "-I/usr/local/include"
-    LDFLAGS: "-L/usr/local/lib"
-    PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH"
-
-- include: samba_compile_deps_src.yml
-  name: Compiling GnuTLS from sources
-
-  vars:
-    src_name: "GnulTLS"
-    src_major_version: "3.6"
-    src_version: "3.6.14"
-    src_tarball_url: "https://www.gnupg.org/ftp/gcrypt/gnutls/v{{ src_major_version }}/gnutls-{{ src_version }}.tar.xz"
-    src_install_file: "/tmp/gnutls-{{ src_version }}.tar.xz"
-    src_install_dir: "/tmp/gnutls-{{ src_version }}"
-    src_prefix_path: "/usr/local"
-
-  environment:
-    CPPFLAGS: "-I/usr/local/include"
-    LDFLAGS: "-L/usr/local/lib"
-    PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH"
-
-- include: samba_compile_deps_src.yml
-  name: Compiling Tdb from sources
-
-  vars:
-    src_name: "Tdb"
-    src_version: "1.4.3"
-    src_tarball_url: "https://www.samba.org/ftp/tdb/tdb-{{ src_version }}.tar.gz"
-    src_install_file: "/tmp/tdb-{{ src_version }}.tar.gz"
-    src_install_dir: "/tmp/tdb-{{ src_version }}"
-    src_prefix_path: "/usr/local"
-
-  environment:
-    CPPFLAGS: "-I/usr/local/include"
-    LDFLAGS: "-L/usr/local/lib"
-    PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH"
-
-- include: samba_compile_deps_src.yml
-  name: Compiling Ldb from sources
-
-  vars:
-    samba_version: "4.12.3"
-    src_name: "Ldb"
-    src_version: "2.1.3"
-    src_tarball_url: "https://www.samba.org/ftp/ldb/ldb-{{ src_version }}.tar.gz"
-    src_install_dir: "/tmp/ldb-{{ src_version }}"
-    src_install_dir: "/tmp/ldb-{{ src_version }}"
-    src_prefix_path: "/usr/local/samba_{{ samba_version }}"
-
-  environment:
-    CPPFLAGS: "-I/usr/local/include"
-    LDFLAGS: "-L/usr/local/lib"
-    PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:{{ src_prefix_path }}/lib/pkgconfig:$PKG_CONFIG_PATH"
-    C_INCLUDE_PATH: "/usr/include/tirpc:{{ src_prefix_path }}/include:$C_INCLUDE_PATH"
-    CPLUS_INCLUDE_PATH: "/usr/include/tirpc:{{ src_prefix_path }}/include:$CPLUS_INCLUDE_PATH"
-
-
-- include: samba_compile_samba4.yml
-  name: Compiling Samba4 from sources
-
-  vars:
-    samba_version: "4.12.3"
-    samba_tarball_url: "https://download.samba.org/pub/samba/stable/samba-{{ samba_version }}.tar.gz"
-    samba_install_dir: "/tmp/samba-{{ samba_version }}"
-    samba_prefix_path: "/usr/local/samba_{{ samba_version }}"
-
-  environment:
-    LDFLAGS: "-L/usr/local/lib"
-    PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:{{ samba_prefix_path }}/lib/pkgconfig:$PKG_CONFIG_PATH"
-    C_INCLUDE_PATH: "/usr/include/readline:/usr/include/tirpc:{{ samba_prefix_path }}/include:$C_INCLUDE_PATH"
-    CPLUS_INCLUDE_PATH: "/usr/include/readline:/usr/include/tirpc:{{ samba_prefix_path }}/include:$CPLUS_INCLUDE_PATH"
+#  environment:
+#    LDFLAGS: "-L/usr/local/lib"
+#    PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:{{ src_prefix_path }}/lib/pkgconfig:$PKG_CONFIG_PATH"
+#    C_INCLUDE_PATH: "/usr/include/readline:/usr/include/tirpc:{{ src_prefix_path }}/include:$C_INCLUDE_PATH"
+#    CPLUS_INCLUDE_PATH: "/usr/include/readline:/usr/include/tirpc:{{ src_prefix_path }}/include:$CPLUS_INCLUDE_PATH"
 

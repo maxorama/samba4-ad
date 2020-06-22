@@ -1,0 +1,75 @@
+[
+  {
+    "src_name": "Talloc",
+    "src_version": "2.3.1",
+    "src_tarball_url": "https://www.samba.org/ftp/talloc/talloc-2.3.1.tar.gz",
+    "src_install_file": "/tmp/talloc-2.3.1.tar.gz",
+    "src_install_dir": "/tmp/talloc-2.3.1",
+    "src_prefix_path": "/usr/local"
+  },
+  { 
+    "src_name": "Tevent",
+    "src_version": "0.10.2",
+    "src_tarball_url": "https://www.samba.org/ftp/tevent/tevent-0.10.2.tar.gz",
+    "src_install_file": "/tmp/tevent-0.10.2.tar.gz",
+    "src_install_dir": "/tmp/tevent-0.10.2",
+    "src_prefix_path": "/usr/local"
+  },
+  {
+    "src_name": "GMP",
+    "src_version": "6.2.0",
+    "src_tarball_url": "https://gmplib.org/download/gmp/gmp-6.2.0.tar.xz",
+    "src_install_file": "/tmp/gmp-6.2.0.tar.xz",
+    "src_install_dir": "/tmp/gmp-6.2.0",
+    "src_prefix_path": "/usr/local",
+  },
+  {
+    "src_name": "Nettle",
+    "src_version": "3.6",
+    "src_tarball_url": "https://ftp.gnu.org/gnu/nettle/nettle-3.6.tar.gz",
+    "src_install_file": "/tmp/nettle-3.6.tar.xz",
+    "src_install_dir": "/tmp/nettle-3.6",
+    "src_prefix_path": "/usr/local"
+  },
+  {
+    "src_name": "P11-Kit",
+    "src_version": "0.23.20",
+    "src_tarball_url": "https://github.com/p11-glue/p11-kit/releases/download/0.23.20/p11-kit-0.23.20.tar.xz",
+    "src_install_file": "/tmp/p11-kit-0.23.20.tar.xz",
+    "src_install_dir": "/tmp/p11-kit-0.23.20",
+    "src_prefix_path": "/usr/local"
+  },
+  {
+    "src_name": "GnulTLS",
+    "src_major_version": "3.6",
+    "src_version": "3.6.14",
+    "src_tarball_url": "https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-3.6.14.tar.xz",
+    "src_install_file": "/tmp/gnutls-3.6.14.tar.xz",
+    "src_install_dir": "/tmp/gnutls-3.6.14",
+    "src_prefix_path": "/usr/local"
+  },
+  {
+    "src_name": "Tdb",
+    "src_version": "1.4.3",
+    "src_tarball_url": "https://www.samba.org/ftp/tdb/tdb-1.4.3.tar.gz",
+    "src_install_file": "/tmp/tdb-1.4.3.tar.gz",
+    "src_install_dir": "/tmp/tdb-1.4.3",
+    "src_prefix_path": "/usr/local"
+  },
+  {
+    "src_name": "Ldb",
+    "src_version": "2.1.3",
+    "src_tarball_url": "https://www.samba.org/ftp/ldb/ldb-2.1.3.tar.gz",
+    "src_install_file": "/tmp/ldb-2.1.3.tar.gz",
+    "src_install_dir": "/tmp/ldb-2.1.3",
+    "src_prefix_path": "/usr/local/samba_4.12.3"
+  },
+  {
+    "src_name": "Samba4",
+    "src_version": "4.12.3",
+    "src_tarball_url": "https://download.samba.org/pub/samba/stable/samba-4.12.3.tar.gz",
+    "src_install_file": "/tmp/samba-4.12.3.tar.gz",
+    "src_install_dir": "/tmp/samba-4.12.3",
+    "src_prefix_path": "/usr/local/samba_4.12.3"
+  }
+]
