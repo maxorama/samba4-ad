@@ -31,5 +31,13 @@
 
   roles:
    - samba4
-#   - reboot
 
+- name: Post configuration
+  hosts: all
+  remote_user: root
+  tags: post_setup
+  gather_facts: no
+
+  roles:
+   - remove_tmp
+   - reboot

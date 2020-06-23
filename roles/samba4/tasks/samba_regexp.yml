@@ -1,0 +1,26 @@
+---
+
+- name: Regexp Samba4 systemd file
+  replace:
+   path: /usr/lib/systemd/system/samba-{{ samba_version }}.service
+   regexp: "@SBINDIR@"
+   replace: "/usr/local/samba_{{ samba_version }}/sbin"
+
+- name: Regexp Samba4 systemd file
+  replace:
+   path: /usr/lib/systemd/system/samba-{{ samba_version }}.service
+   regexp: "@PIDDIR@"
+   replace: "/usr/local/samba_{{ samba_version }}/var/run"
+
+- name: Regexp Samba4 systemd file
+  replace:
+   path: /usr/lib/systemd/system/samba-{{ samba_version }}.service
+   regexp: "@SYSCONFDIR@"
+   replace: "/etc/sysconfig"
+
+- name: Regexp Samba4 systemd file
+  lineinfile:
+    path: /usr/lib/systemd/system/samba-{{ samba_version }}.service
+    regexp: "systemd_samba_extra"
+    state: absent
+

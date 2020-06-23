@@ -2,13 +2,14 @@
 
 - name: Installing Samba4 requirements
   dnf:
-   name: ['python3','python3-devel','libxslt','zlib-devel','docbook-style-xsl','intltool','lmdb','lmdb-devel','libticonv','libticonv-devel','libcmocka','libcmocka-devel','popt','popt-devel','openldap','openldap-devel','cryptlib','cryptlib-devel','libgcrypt-devel','libscrypt','libscrypt-devel','libtirpc-devel','xmlrpc-c','xmlrpc-c-client','readline-devel','libtasn1-devel','libunistring-devel','libffi-devel','gpgme-devel','libunwind','libunwind-devel','systemd-devel','lttng-ust','lttng-ust-devel','libicu','libicu-devel','lttng-tools','lttng-tools-devel','perl-Parse-Yapp','jansson-devel','libarchive','libarchive-devel','libacl-devel','pam-devel','glusterfs-api-devel','dbus-devel','bison','bison-devel','flex','flex-devel','libtasn1-tools','cups-devel','nscd','compat-glibc','compat-glibc-headers.x86_64','avahi','avahi-devel']
-   state: present
+    name: ['python3','python3-devel','libxslt','zlib-devel','docbook-style-xsl','intltool','lmdb','lmdb-devel','libticonv','libticonv-devel','libcmocka','libcmocka-devel','popt','popt-devel','openldap','openldap-devel','cryptlib','cryptlib-devel','libgcrypt-devel','libscrypt','libscrypt-devel','libtirpc-devel','xmlrpc-c','xmlrpc-c-client','readline-devel','libtasn1-devel','libunistring-devel','libffi-devel','gpgme-devel','libunwind','libunwind-devel','systemd-devel','lttng-ust','lttng-ust-devel','libicu','libicu-devel','lttng-tools','lttng-tools-devel','perl-Parse-Yapp','jansson-devel','libarchive','libarchive-devel','libacl-devel','pam-devel','glusterfs-api-devel','dbus-devel','bison','bison-devel','flex','flex-devel','libtasn1-tools','cups-devel','nscd','compat-glibc','compat-glibc-headers.x86_64','avahi','avahi-devel']
+    state: present
   register: result
   ignore_errors: False
 
 - set_fact:
     nested_list: "{{ lookup('file', './src_file.json') }}"
+    samba_version: "4.12.3"
 
 - name: Compiling necessary libraries from source
   args:
@@ -27,17 +28,29 @@
   with_items:
     - "{{ nested_list }}"
 
-  vars:
-    src_name: "Samba4"
-    src_version: "4.12.3"
-    src_tarball_url: "https://download.samba.org/pub/samba/stable/samba-{{ src_version }}.tar.gz"
-    src_install_file: "/tmp/samba-{{ src_version }}.tar.gz"
-    src_install_dir: "/tmp/samba-{{ src_version }}"
-    src_prefix_path: "/usr/local/samba_{{ src_version }}"
+- name: Coping systemd files
+  copy: 
+    src=/tmp/samba-{{ samba_version }}/packaging/systemd/samba.service.in
+    dest=/usr/lib/systemd/system/samba-{{ samba_version }}.service
+    remote_src=yes
+    mode=0755
+    force=yes
+  register: result
+  ignore_errors: false
 
-#  environment:
-#    LDFLAGS: "-L/usr/local/lib"
-#    PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:{{ src_prefix_path }}/lib/pkgconfig:$PKG_CONFIG_PATH"
-#    C_INCLUDE_PATH: "/usr/include/readline:/usr/include/tirpc:{{ src_prefix_path }}/include:$C_INCLUDE_PATH"
-#    CPLUS_INCLUDE_PATH: "/usr/include/readline:/usr/include/tirpc:{{ src_prefix_path }}/include:$CPLUS_INCLUDE_PATH"
+- name: Coping systemd files
+  copy:
+    src=/tmp/samba-{{ samba_version }}/packaging/systemd/samba.sysconfig
+    dest=/etc/sysconfig/samba
+    remote_src=yes
+    mode=0755
+    force=yes
+  register: result
+  ignore_errors: false
+
+- include: samba_regexp.yml
+
+- name: Start the Samba4 service
+  service: name=samba-{{ samba_version }} state=started enabled=yes
+  tags: samba
 

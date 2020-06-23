@@ -1,0 +1,32 @@
+---
+
+#- debug:
+#    msg: "{{ item }}"
+#  with_items:
+#    - "{{ nested_list }}"
+
+- name: Ansible search files for remove
+  find:
+   paths: /tmp/
+   patterns: 'vagrant*'
+   recurse: True
+  register: files_to_delete
+
+- name: Ansible remove file glob
+  file:
+   path: "{{ item.path }}"
+   state: absent
+  with_items: "{{ files_to_delete.files }}"
+
+- name: Ansible remove file glob
+  file:
+   path: "{{ item.src_install_file }}"
+   state: absent
+  with_items: "{{ nested_list }}"
+
+- name: Ansible remove file glob
+  file:
+   path: "{{ item.src_install_dir }}"
+   state: absent
+  with_items: "{{ nested_list }}"
+
