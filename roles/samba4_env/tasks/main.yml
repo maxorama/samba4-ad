@@ -1,0 +1,22 @@
+---
+
+- name: Touch Samba4 environment file
+  file:
+    path: "/etc/ld.so.conf.d/samba4.conf"
+    state: touch
+    mode: 0644
+  register: result
+  ignore_errors: False
+
+- name: Adding Samba4 environment into env file
+  lineinfile:
+    path: "/etc/ld.so.conf.d/samba4.conf"
+    line: "{{ item }}"
+    insertafter: EOF
+    state: present
+  loop:
+    - "/usr/local/lib"
+    - "/usr/local/lib64"
+    - "/usr/local/samba_{{ samba_version }}/lib"
+    - "/usr/local/samba_{{ samba_version }}/lib64"
+

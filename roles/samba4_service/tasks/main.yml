@@ -1,0 +1,9 @@
+---
+
+- name: Running ldconfig for linking libraries
+  command: /usr/sbin/ldconfig
+
+- name: Start the Samba4 service
+  service: name=samba-{{ samba_version }} state=started enabled=yes
+  tags: samba
+  ignore_errors: yes
