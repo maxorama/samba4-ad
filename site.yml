@@ -31,6 +31,8 @@
 
   roles:
    - samba4
+   - samba4_env
+   - reboot
 
 - name: Post configuration
   hosts: all
@@ -39,5 +41,6 @@
   gather_facts: no
 
   roles:
+   - samba4_service
    - remove_tmp
    - reboot

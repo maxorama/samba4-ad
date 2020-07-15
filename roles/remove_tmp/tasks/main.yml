@@ -1,10 +1,5 @@
 ---
 
-#- debug:
-#    msg: "{{ item }}"
-#  with_items:
-#    - "{{ nested_list }}"
-
 - name: Ansible search files for remove
   find:
    paths: /tmp/

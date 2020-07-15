@@ -9,13 +9,13 @@
 
 - set_fact:
     nested_list: "{{ lookup('file', './src_file.json') }}"
-    samba_version: "4.12.3"
+    samba_version: "4.12.5"
 
 - name: Compiling necessary libraries from source
   args:
     apply:
       vars:
-        samba_version: "4.12.3"
+        samba_version: "{{ samba_version }}"
 
       environment:
         CPPFLAGS: "-I/usr/local/include"
@@ -49,8 +49,4 @@
   ignore_errors: false
 
 - include: samba_regexp.yml
-
-- name: Start the Samba4 service
-  service: name=samba-{{ samba_version }} state=started enabled=yes
-  tags: samba
 
